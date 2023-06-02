@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba - Gráfico  Heatmap</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <div id="chart"></div>
+
+  <script>
+    // Datos 
+    var data = [
+      { Fecha: '2/3/2020', Indicador: 'DURATION CI', Dato: 0.424689849 },
+      { Fecha: '3/3/2020', Indicador: 'DURATION CI', Dato: 0.461505276 },
+      { Fecha: '4/3/2020', Indicador: 'DURATION CI', Dato: 0.480669841 },
+      { Fecha: '5/3/2020', Indicador: 'DURATION CI', Dato: 0.501464309 },
+      { Fecha: '6/3/2020', Indicador: 'DURATION CI', Dato: 0.522783664 },
+      { Fecha: '9/3/2020', Indicador: 'DURATION CI', Dato: 0.500173958 },
+      { Fecha: '10/3/2020', Indicador: 'DURATION CI', Dato: 0.52436679 },
+      { Fecha: '11/3/2020', Indicador: 'DURATION CI', Dato: 0.539929956 },
+      { Fecha: '12/3/2020', Indicador: 'DURATION CI', Dato: 0.541485877 },
+      { Fecha: '13/3/2020', Indicador: 'DURATION CI', Dato: 0.611165002 },
+      { Fecha: '16/3/2020', Indicador: 'DURATION CI', Dato: 0.599469486 },
+      { Fecha: '17/3/2020', Indicador: 'DURATION CI', Dato: 0.602478211 },
+      { Fecha: '18/3/2020', Indicador: 'DURATION CI', Dato: 0.582315526 },
+      { Fecha: '19/3/2020', Indicador: 'DURATION CI', Dato: 0.594374703 },
+      { Fecha: '20/3/2020', Indicador: 'DURATION CI', Dato: 0.5748455 },
+      { Fecha: '23/3/2020', Indicador: 'DURATION CI', Dato: 0.545854718 },
+      { Fecha: '24/3/2020', Indicador: 'DURATION CI', Dato: 0.591540695 }
+    ];
+
+    // array de fechas  indicadores únicos (en este caso deberia cambiar al valor de Dato en lugar de indicaodor
+    // REVISAR!)
+    var fechas = Array.from(new Set(data.map(item => item.Fecha)));
+    var indicadores = Array.from(new Set(data.map(item => item.Indicador)));
+
+    // Armo Matriz de datos para el heatmap
+    var heatmapData = [];
+    for (var i = 0; i < fechas.length; i++) {
+      var row = [];
+      for (var j = 0; j < indicadores.length; j++) {
+        var dato = data.find(item => item.Fecha === fechas[i] && item.Indicador === indicadores[j]);
+        row.push(dato ? dato.Dato : null);
+      }
+      heatmapData.push(row);
+    }
+
+    //  colores para el heatmap
+    var colorscale = [
+     //  [0, 'rgb(255,255,255)'],
+     //  [1, 'rgb(255,0,0)']
+       [0, 'rgb(255, 255, 0)'],
+       [0.5, 'rgb(255, 0, 0)'],
+       [0.6, 'rgb(255, 254, 0)'],
+       [1, 'rgb(0, 255, 0)']
+    ];
+
+    // datos heatmap
+    var heatmap = {
+      x: indicadores,
+      y: fechas,
+      z: heatmapData,
+      type: 'heatmap',
+      colorscale: colorscale
+    };
+
+    // Diseño del gráfico
+    var layout = {
+      title: 'Gráfico de Heatmap',
+      xaxis: {
+        title: 'Indicador'
+      },
+      yaxis: {
+        title: 'Fecha'
+      }
+    };
+
+    // Generar el gráfico de heatmap
+    Plotly.newPlot('chart', [heatmap], layout);
+  </script>
+</body>
+</html>
